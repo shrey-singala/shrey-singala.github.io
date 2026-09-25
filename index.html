@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shrey Singala | Computer Engineer</title>
+  <meta name="description" content="Portfolio of Shrey Singala, Computer Engineering student at Penn State: embedded systems, FPGAs, firmware, and software projects with downloadable reports." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d1117'/%3E%3Ctext x='50' y='68' font-size='56' text-anchor='middle' fill='%2322d3ee' font-family='monospace'%3ES%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- ===================== NAV ===================== -->
+  <header class="nav" id="top">
+    <div class="nav__inner container">
+      <a href="#top" class="nav__brand">
+        <span class="nav__brand-bracket">&lt;</span>shrey<span class="nav__brand-slash">/</span>singala<span class="nav__brand-bracket">&gt;</span>
+      </a>
+
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navMenu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav__menu" id="navMenu" aria-label="Primary">
+        <a href="#projects" class="nav__link">Projects</a>
+        <a href="#skills" class="nav__link">Skills</a>
+        <a href="#experience" class="nav__link">Experience</a>
+        <a href="#contact" class="nav__link">Contact</a>
+        <a href="assets/resume/Shrey_Singala.pdf" class="btn btn--sm btn--accent" target="_blank" rel="noopener">Résumé ↓</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===================== HERO ===================== -->
+    <section class="hero">
+      <div class="container hero__inner reveal">
+        <p class="hero__eyebrow">Computer Engineer · Penn State '27</p>
+        <h1 class="hero__title">Shrey Singala</h1>
+        <p class="hero__tagline">
+          I build real systems end to end, from <span class="hl">FPGAs</span> and
+          <span class="hl">embedded robotics</span> to <span class="hl">cloud infrastructure</span>.
+          Below are the projects, with the actual reports attached so you can read the work.
+        </p>
+        <div class="hero__cta">
+          <a href="#projects" class="btn btn--accent">View Projects</a>
+          <a href="assets/resume/Shrey_Singala.pdf" class="btn btn--ghost" target="_blank" rel="noopener">Download Résumé ↓</a>
+        </div>
+        <ul class="hero__stats">
+          <li><span class="hero__stat-num">4</span><span class="hero__stat-label">Featured projects</span></li>
+          <li><span class="hero__stat-num">3.62</span><span class="hero__stat-label">GPA</span></li>
+          <li><span class="hero__stat-num">HW + SW</span><span class="hero__stat-label">Full stack, silicon to cloud</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================== ABOUT ===================== -->
+    <section class="section" id="about">
+      <div class="container reveal">
+        <h2 class="section__title"><span class="section__num">01.</span> About</h2>
+        <div class="about__grid">
+          <div class="about__bio">
+            <p>
+              I'm a Computer Engineering student at Penn State with a passion for building things that
+              actually work: instrumented rocket payloads, bare-metal firmware, pipelined processors,
+              analog circuits, and networked software. I like owning a project from concept to a
+              working, validated result.
+            </p>
+            <p>
+              I care about technical depth and doing the unglamorous parts right: debugging waveforms,
+              chasing down a stray hazard in a pipeline, or synchronizing shared state across threads
+              without a single self-disconnect.
+            </p>
+          </div>
+          <aside class="about__card">
+            <h3 class="about__card-title">Education</h3>
+            <p class="about__degree">B.S. Computer Engineering</p>
+            <p class="about__school">Pennsylvania State University, University Park</p>
+            <ul class="about__meta">
+              <li><span>Minor</span> Quantum Computing</li>
+              <li><span>GPA</span> 3.62</li>
+              <li><span>Dates</span> Aug 2023 – May 2027</li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PROJECTS ===================== -->
+    <section class="section" id="projects">
+      <div class="container">
+        <h2 class="section__title reveal"><span class="section__num">02.</span> Projects</h2>
+        <p class="section__sub reveal">Click any project for the full story: how it works, how I built it, and what I took away.</p>
+
+        <!-- Project 1: Chat App -->
+        <a class="project reveal" href="projects/chat-application.html">
+          <div class="project__media">
+            <img src="assets/img/chat-interface.png" alt="Multi-threaded chat application terminal interface" loading="lazy" />
+          </div>
+          <div class="project__body">
+            <div class="project__head">
+              <h3 class="project__title">Multi-Threaded Chat Application</h3>
+            </div>
+            <p class="project__meta">Networked C client/server · Systems programming</p>
+            <p class="project__lead">
+              A full-duplex terminal chat client and server speaking a custom binary protocol over TCP,
+              with concurrent send/receive and airtight input validation.
+            </p>
+            <ul class="project__tags">
+              <li>C</li><li>TCP/IP</li><li>pthreads</li><li>Sockets</li><li>Binary Protocol</li><li>Signals</li>
+            </ul>
+            <span class="project__cta">View project →</span>
+          </div>
+        </a>
+
+        <!-- Project 2: Analog Audio -->
+        <a class="project reveal" href="projects/analog-audio.html">
+          <div class="project__media">
+            <img src="assets/img/analog-pcb.jpg" alt="Analog audio processor PCB layout" loading="lazy" />
+          </div>
+          <div class="project__body">
+            <div class="project__head">
+              <h3 class="project__title">Analog Audio Signal Processing System</h3>
+            </div>
+            <p class="project__meta">Op-amp audio hardware · Analog design</p>
+            <p class="project__lead">
+              A multi-stage analog audio processor (mixer/karaoke, tone control, volume, and a
+              visual amplitude meter) taken from simulation all the way to a PCB.
+            </p>
+            <ul class="project__tags">
+              <li>Analog Design</li><li>Op-Amps</li><li>Baxandall</li><li>NI Multisim</li><li>PCB</li>
+            </ul>
+            <span class="project__cta">View project →</span>
+          </div>
+        </a>
+
+        <!-- Project 3: Pipelined CPU -->
+        <a class="project reveal" href="projects/pipelined-cpu.html">
+          <div class="project__media">
+            <img src="assets/img/cpu-waveform.jpg" alt="Vivado waveform simulation of the pipelined CPU" loading="lazy" />
+          </div>
+          <div class="project__body">
+            <div class="project__head">
+              <h3 class="project__title">2-Way Superscalar Pipelined CPU</h3>
+            </div>
+            <p class="project__meta">MIPS processor on FPGA · Computer architecture</p>
+            <p class="project__lead">
+              A 5-stage pipelined MIPS processor in Verilog, extended with new instructions and full
+              hazard handling, verified cycle-accurately on an FPGA.
+            </p>
+            <ul class="project__tags">
+              <li>Verilog</li><li>FPGA</li><li>MIPS</li><li>Xilinx Zynq-7000</li><li>Vivado</li>
+            </ul>
+            <span class="project__cta">View project →</span>
+          </div>
+        </a>
+
+        <!-- Project 4: Object Tracking (CV) -->
+        <a class="project reveal" href="projects/object-tracking.html">
+          <div class="project__media">
+            <img src="assets/img/object-tracking-car.jpg" alt="Matthew-Baker tracker following a car" loading="lazy" />
+          </div>
+          <div class="project__body">
+            <div class="project__head">
+              <h3 class="project__title">Object Tracking, Lucas-Kanade &amp; Matthew-Baker</h3>
+            </div>
+            <p class="project__meta">Computer vision · MATLAB</p>
+            <p class="project__lead">
+              Two affine template trackers implemented from scratch: a classic Lucas-Kanade tracker and
+              the faster inverse-compositional Matthew-Baker method, with a full failure-mode analysis.
+            </p>
+            <ul class="project__tags">
+              <li>MATLAB</li><li>Computer Vision</li><li>Optical Flow</li><li>Affine Warps</li><li>Linear Algebra</li>
+            </ul>
+            <span class="project__cta">View project →</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===================== SKILLS ===================== -->
+    <section class="section" id="skills">
+      <div class="container reveal">
+        <h2 class="section__title"><span class="section__num">03.</span> Skills</h2>
+        <div class="skills__grid">
+          <div class="skills__group">
+            <h3 class="skills__label">Software</h3>
+            <ul class="skills__list">
+              <li>C / C++</li><li>Python</li><li>Java</li><li>MySQL</li><li>AWS</li><li>TCP/IP</li><li>Git</li><li>Data Analysis</li>
+            </ul>
+          </div>
+          <div class="skills__group">
+            <h3 class="skills__label">Hardware</h3>
+            <ul class="skills__list">
+              <li>Verilog</li><li>FPGA</li><li>STM32</li><li>Bare-Metal Firmware</li><li>I2C</li><li>PWM</li><li>Sensor Fusion</li><li>PID/LQR Control</li><li>3D Modeling</li><li>Analog Circuit Design</li><li>PCB Prototyping</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== EXPERIENCE ===================== -->
+    <section class="section" id="experience">
+      <div class="container reveal">
+        <h2 class="section__title"><span class="section__num">04.</span> Experience</h2>
+        <ol class="timeline">
+          <li class="timeline__item">
+            <div class="timeline__head">
+              <h3 class="timeline__role">Co-Founder &amp; Events Director</h3>
+              <span class="timeline__date">Jan 2025 – Present</span>
+            </div>
+            <p class="timeline__org">AWS Cloud Club · Penn State</p>
+            <p class="timeline__desc">Co-founded one of the fastest-growing orgs on campus (150+ active members), led a 6-member operations team, and coordinated with AWS Solutions Architects to deliver hands-on cloud workshops and AWS Jams.</p>
+          </li>
+          <li class="timeline__item">
+            <div class="timeline__head">
+              <h3 class="timeline__role">CSE Learning Assistant, Data Structures &amp; Algorithms</h3>
+              <span class="timeline__date">Aug 2025 – Present</span>
+            </div>
+            <p class="timeline__org">Penn State</p>
+            <p class="timeline__desc">Lead recitations for 100+ students, giving detailed feedback on algorithmic correctness, runtime complexity, and edge cases. Received faculty commendation for feedback quality.</p>
+          </li>
+          <li class="timeline__item">
+            <div class="timeline__head">
+              <h3 class="timeline__role">Student Training Program</h3>
+              <span class="timeline__date">Jan 2024 – May 2024</span>
+            </div>
+            <p class="timeline__org">Student Space Program Laboratory (SSPL) · Penn State</p>
+            <p class="timeline__desc">Designed and built a sensor-instrumented rocket payload from concept to launch, collected temperature/pressure/altitude/IMU data through ascent, and diagnosed a parachute-deployment failure in the post-mission debrief.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===================== CONTACT ===================== -->
+    <section class="section section--contact" id="contact">
+      <div class="container reveal">
+        <h2 class="section__title"><span class="section__num">05.</span> Get in touch</h2>
+        <p class="contact__lead">
+          Open to internships and engineering roles. The fastest way to reach me is email.
+          Happy to share source code or walk through any of the projects above.
+        </p>
+        <div class="contact__actions">
+          <a href="mailto:sas8188@psu.edu" class="btn btn--accent">sas8188@psu.edu</a>
+          <a href="https://www.linkedin.com/in/shrey-singala" class="btn btn--ghost" target="_blank" rel="noopener">LinkedIn ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>Shrey Singala</span>
+      <span class="footer__built">Built with plain HTML, CSS &amp; JS</span>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

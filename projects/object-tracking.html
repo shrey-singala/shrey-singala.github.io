@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Object Tracking (Computer Vision) | Shrey Singala</title>
+  <meta name="description" content="Two affine template trackers built from scratch in MATLAB (Lucas-Kanade and the faster inverse-compositional Matthew-Baker) with failure-mode analysis." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d1117'/%3E%3Ctext x='50' y='68' font-size='56' text-anchor='middle' fill='%2322d3ee' font-family='monospace'%3ES%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="nav__inner container">
+      <a href="../index.html" class="nav__brand">
+        <span class="nav__brand-bracket">&lt;</span>shrey<span class="nav__brand-slash">/</span>singala<span class="nav__brand-bracket">&gt;</span>
+      </a>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navMenu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav__menu" id="navMenu" aria-label="Primary">
+        <a href="../index.html#projects" class="nav__link">Projects</a>
+        <a href="../index.html#skills" class="nav__link">Skills</a>
+        <a href="../index.html#experience" class="nav__link">Experience</a>
+        <a href="../index.html#contact" class="nav__link">Contact</a>
+        <a href="../assets/resume/Shrey_Singala.pdf" class="btn btn--sm btn--accent" target="_blank" rel="noopener">Résumé ↓</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="pp">
+    <div class="container">
+      <a href="../index.html#projects" class="pp-back">← All projects</a>
+
+      <header class="pp-hero reveal">
+        <div class="pp-eyebrow">
+          <span>Computer Vision · MATLAB</span>
+        </div>
+        <h1 class="pp-title">Object Tracking: Lucas-Kanade &amp; Matthew-Baker</h1>
+        <p class="pp-lead">
+          Draw a box around something in the first frame of a video, and these trackers keep the box
+          on it as it moves. I implemented two classic <strong>affine template trackers</strong> from
+          scratch: the standard Lucas-Kanade method and the faster inverse-compositional
+          Matthew-Baker method, and analyzed exactly where and why each one breaks.
+        </p>
+        <ul class="pp-tags">
+          <li>MATLAB</li><li>Computer Vision</li><li>Optical Flow</li><li>Affine Warps</li>
+          <li>Least Squares</li><li>Linear Algebra</li>
+        </ul>
+        <div class="pp-hero__actions">
+          <a href="../assets/reports/object-tracking-report.pdf" class="btn btn--accent" target="_blank" rel="noopener">Read the full report ↓</a>
+        </div>
+      </header>
+
+      <section class="pp-gallery reveal" aria-label="Project images">
+        <img src="../assets/img/object-tracking-car.jpg" alt="Matthew-Baker tracker following a car" />
+        <img src="../assets/img/object-tracking-runway.jpg" alt="Tracker on the runway landing sequence" />
+      </section>
+
+      <div class="pp-content">
+        <section class="pp-section reveal">
+          <h2 class="pp-section__title"><span class="pp-section__num">01</span> Overview</h2>
+          <p>
+            Both trackers work the same way at a high level: each frame, they solve for the
+            <strong>warp</strong> that best re-aligns the current frame back onto a template saved from
+            the start, then move the box by that warp. The difference is in how efficiently they do it.
+          </p>
+          <p>
+            I built this to really understand template alignment and optical flow, not just to make a
+            box follow a car, but to derive the math behind it and study its limits.
+          </p>
+        </section>
+
+        <section class="pp-section reveal">
+          <h2 class="pp-section__title"><span class="pp-section__num">02</span> How I built it</h2>
+          <ol class="pp-steps">
+            <li class="pp-step">
+              <h3>Lucas-Kanade tracker</h3>
+              <p>The forward-additive method: each frame I warp the current image and its gradients,
+              measure the error against the template, assemble the steepest-descent images, and solve
+              the <strong>normal equations</strong> for a small parameter update, iterating until it
+              converges.</p>
+            </li>
+            <li class="pp-step">
+              <h3>Matthew-Baker tracker</h3>
+              <p>The inverse-compositional method precomputes the <strong>Jacobian and Hessian once</strong>
+              from the fixed template (since they never change) and reuses them every iteration,
+              making it noticeably faster. Updates are applied by composing the inverse warp.</p>
+            </li>
+            <li class="pp-step">
+              <h3>The underlying math</h3>
+              <p>I derived the <strong>affine warp Jacobian</strong> by hand, worked out why the
+              inverse-compositional approach costs less per iteration, and handled a subtlety in the
+              provided warp function (it samples at the inverse warp, so I had to pass
+              <code>inv(W)</code>). I also added a guard so a warp that goes singular degrades
+              gracefully instead of crashing.</p>
+            </li>
+            <li class="pp-step">
+              <h3>Testing &amp; failure analysis</h3>
+              <p>I ran the trackers on a car sequence and a runway sequence and analyzed the failure
+              modes: plain Lucas-Kanade drifts because it's translation-only and accumulates error;
+              Matthew-Baker holds much longer but breaks under the lighting change of a bridge shadow,
+              and diverges on the runway as scale grows against a low-texture background.</p>
+            </li>
+          </ol>
+        </section>
+
+        <section class="pp-section reveal">
+          <h2 class="pp-section__title"><span class="pp-section__num">03</span> What I learned</h2>
+          <ul class="learn-grid">
+            <li class="learn-item">Template alignment and optical-flow tracking from first principles</li>
+            <li class="learn-item">Image warping, gradients, and the least-squares math behind the update</li>
+            <li class="learn-item">Deriving a Jacobian and Hessian, and why precomputation buys speed</li>
+            <li class="learn-item">Numerical robustness: guarding against singular / diverging warps</li>
+            <li class="learn-item">Rigorously analyzing why an algorithm fails, not just when it works</li>
+          </ul>
+        </section>
+      </div>
+
+      <nav class="pp-nav" aria-label="Project navigation">
+        <a class="pp-nav__link pp-nav__link--prev" href="pipelined-cpu.html">
+          <span class="pp-nav__dir">← Previous project</span>
+          <span class="pp-nav__name">2-Way Superscalar Pipelined CPU</span>
+        </a>
+        <a class="pp-nav__link pp-nav__link--next" href="../index.html#projects">
+          <span class="pp-nav__dir">Back to →</span>
+          <span class="pp-nav__name">All projects</span>
+        </a>
+      </nav>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>Shrey Singala</span>
+      <span class="footer__built">Built with plain HTML, CSS &amp; JS</span>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

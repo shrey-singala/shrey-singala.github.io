@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analog Audio Signal Processing | Shrey Singala</title>
+  <meta name="description" content="A multi-stage analog audio processor (mixer/karaoke, Baxandall tone control, volume, and an LED amplitude meter) from simulation to PCB." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d1117'/%3E%3Ctext x='50' y='68' font-size='56' text-anchor='middle' fill='%2322d3ee' font-family='monospace'%3ES%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="nav__inner container">
+      <a href="../index.html" class="nav__brand">
+        <span class="nav__brand-bracket">&lt;</span>shrey<span class="nav__brand-slash">/</span>singala<span class="nav__brand-bracket">&gt;</span>
+      </a>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navMenu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav__menu" id="navMenu" aria-label="Primary">
+        <a href="../index.html#projects" class="nav__link">Projects</a>
+        <a href="../index.html#skills" class="nav__link">Skills</a>
+        <a href="../index.html#experience" class="nav__link">Experience</a>
+        <a href="../index.html#contact" class="nav__link">Contact</a>
+        <a href="../assets/resume/Shrey_Singala.pdf" class="btn btn--sm btn--accent" target="_blank" rel="noopener">Résumé ↓</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="pp">
+    <div class="container">
+      <a href="../index.html#projects" class="pp-back">← All projects</a>
+
+      <header class="pp-hero reveal">
+        <div class="pp-eyebrow">
+          <span>Analog Electronics · Hardware</span>
+        </div>
+        <h1 class="pp-title">Analog Audio Signal Processing System</h1>
+        <p class="pp-lead">
+          A sound-control / karaoke box that takes a stereo audio input and lets you
+          <strong>mix or cancel vocals</strong>, shape <strong>bass and treble</strong>, set the
+          <strong>volume</strong>, and watch the loudness on an <strong>LED meter</strong>, built
+          end to end from simulation, to breadboard, to a finished PCB.
+        </p>
+        <ul class="pp-tags">
+          <li>Analog Design</li><li>Op-Amps</li><li>Summing / Difference Amps</li>
+          <li>Baxandall Tone Control</li><li>NI Multisim</li><li>PCB Prototyping</li>
+        </ul>
+        <div class="pp-hero__actions">
+          <a href="../assets/reports/analog-audio-report.pdf" class="btn btn--accent" target="_blank" rel="noopener">Read the full report ↓</a>
+        </div>
+      </header>
+
+      <section class="pp-gallery reveal" aria-label="Project images">
+        <img src="../assets/img/analog-pcb.jpg" alt="Finished analog audio processor PCB layout" />
+        <img src="../assets/img/analog-schematic.jpg" alt="Multisim schematic of the analog audio processor" />
+      </section>
+
+      <div class="pp-content">
+        <section class="pp-section reveal">
+          <h2 class="pp-section__title"><span class="pp-section__num">01</span> Overview</h2>
+          <p>
+            The system is a chain of four analog blocks, each doing one job to the audio signal. It
+            accepts left and right channels from a 3.5&nbsp;mm jack and processes them entirely in the
+            analog domain with op-amps, passive components, and potentiometers, no microcontroller.
+          </p>
+          <p>
+            I designed and verified each stage in simulation first, then proved it on real hardware,
+            which meant chasing down the differences between the ideal model and the physical circuit.
+          </p>
+        </section>
+
+        <section class="pp-section reveal">
+          <h2 class="pp-section__title"><span class="pp-section__num">02</span> How I built it</h2>
+          <ol class="pp-steps">
+            <li class="pp-step">
+              <h3>Block 1: Mixer / Karaoke</h3>
+              <p>An op-amp configured as an <strong>inverting summing amplifier</strong> to combine the
+              channels, giving &minus;(L+R) for mixing, or as a <strong>difference amplifier</strong>
+              giving (L&minus;R) for karaoke, which cancels the vocals that sit equally on both channels. An
+              SPDT switch selects the mode, with matched 7.5&nbsp;kΩ 1% resistors for unity gain.</p>
+            </li>
+            <li class="pp-step">
+              <h3>Block 2: Tone control</h3>
+              <p>A <strong>Baxandall</strong> bass/treble network that leans on capacitors behaving as
+              open circuits at low frequencies and shorts at high frequencies, giving roughly a
+              1/10&times; to 10&times; gain range on each of bass and treble.</p>
+            </li>
+            <li class="pp-step">
+              <h3>Block 3: Volume</h3>
+              <p>A single potentiometer acting as a <strong>voltage divider</strong> to output a
+              variable fraction of the signal.</p>
+            </li>
+            <li class="pp-step">
+              <h3>Block 4: Amplitude display</h3>
+              <p>A <strong>resistor ladder driving four LEDs</strong> that light progressively as the
+              audio amplitude crosses 0.25&nbsp;V, 0.5&nbsp;V, 1&nbsp;V, and 1.5&nbsp;V: a simple
+              visual loudness meter.</p>
+            </li>
+            <li class="pp-step">
+              <h3>Simulation → breadboard → PCB</h3>
+              <p>I modeled and tested the whole system in <strong>NI Multisim</strong>, validated it on
+              a <strong>breadboard</strong>, then laid out and built a <strong>PCB</strong>, debugging
+              resistor-ladder tuning and signal-attenuation issues along the way to improve stability.</p>
+            </li>
+          </ol>
+        </section>
+
+        <section class="pp-section reveal">
+          <h2 class="pp-section__title"><span class="pp-section__num">03</span> What I learned</h2>
+          <ul class="learn-grid">
+            <li class="learn-item">Op-amp circuit design: summing, difference, and tone-shaping stages</li>
+            <li class="learn-item">Analog frequency response and how capacitors set frequency boundaries</li>
+            <li class="learn-item">Choosing component values to hit target gains and tolerances</li>
+            <li class="learn-item">The full simulation → breadboard → PCB prototyping workflow</li>
+            <li class="learn-item">Diagnosing why real hardware behaves differently from the model</li>
+          </ul>
+        </section>
+      </div>
+
+      <nav class="pp-nav" aria-label="Project navigation">
+        <a class="pp-nav__link pp-nav__link--prev" href="chat-application.html">
+          <span class="pp-nav__dir">← Previous project</span>
+          <span class="pp-nav__name">Multi-Threaded Chat Application</span>
+        </a>
+        <a class="pp-nav__link pp-nav__link--next" href="pipelined-cpu.html">
+          <span class="pp-nav__dir">Next project →</span>
+          <span class="pp-nav__name">2-Way Superscalar Pipelined CPU</span>
+        </a>
+      </nav>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>Shrey Singala</span>
+      <span class="footer__built">Built with plain HTML, CSS &amp; JS</span>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

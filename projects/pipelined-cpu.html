@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pipelined MIPS CPU | Shrey Singala</title>
+  <meta name="description" content="A 5-stage pipelined MIPS CPU in Verilog on FPGA: extended instruction set, hazard detection, and stall logic, verified in Vivado." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d1117'/%3E%3Ctext x='50' y='68' font-size='56' text-anchor='middle' fill='%2322d3ee' font-family='monospace'%3ES%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="nav__inner container">
+      <a href="../index.html" class="nav__brand">
+        <span class="nav__brand-bracket">&lt;</span>shrey<span class="nav__brand-slash">/</span>singala<span class="nav__brand-bracket">&gt;</span>
+      </a>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navMenu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav__menu" id="navMenu" aria-label="Primary">
+        <a href="../index.html#projects" class="nav__link">Projects</a>
+        <a href="../index.html#skills" class="nav__link">Skills</a>
+        <a href="../index.html#experience" class="nav__link">Experience</a>
+        <a href="../index.html#contact" class="nav__link">Contact</a>
+        <a href="../assets/resume/Shrey_Singala.pdf" class="btn btn--sm btn--accent" target="_blank" rel="noopener">Résumé ↓</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="pp">
+    <div class="container">
+      <a href="../index.html#projects" class="pp-back">← All projects</a>
+
+      <header class="pp-hero reveal">
+        <div class="pp-eyebrow">
+          <span>Computer Architecture · Digital Design</span>
+        </div>
+        <h1 class="pp-title">2-Way Superscalar Pipelined CPU</h1>
+        <p class="pp-lead">
+          Starting from a provided single-cycle MIPS processor, I rebuilt it as a
+          <strong>5-stage pipelined CPU</strong> in Verilog, adding new instructions and full
+          <strong>hazard detection with stall logic</strong>, then verified it cycle-accurately on an
+          FPGA.
+        </p>
+        <ul class="pp-tags">
+          <li>Verilog</li><li>MIPS</li><li>5-Stage Pipeline</li><li>Hazard Detection</li>
+          <li>FPGA</li><li>Xilinx Zynq-7000</li><li>AMD Vivado</li>
+        </ul>
+      </header>
+
+      <section class="pp-gallery reveal" aria-label="Project images">
+        <img src="../assets/img/cpu-waveform.jpg" alt="Vivado waveform simulation of the pipelined MIPS CPU" />
+      </section>
+
+      <div class="pp-content">
+        <section class="pp-section reveal">
+          <h2 class="pp-section__title"><span class="pp-section__num">01</span> Overview</h2>
+          <p>
+            The starting point was a single-cycle MIPS CPU that could only run <code>ADD</code>,
+            <code>ADDI</code>, <code>LW</code>, and <code>SW</code>. The goal was to turn it into a
+            <strong>5-stage pipeline</strong> (Instruction Fetch, Decode, Execute, Memory, and
+            Write-Back) that runs a wider instruction set and correctly handles the data hazards that
+            pipelining introduces.
+          </p>
+          <p>
+            Pipelining overlaps instructions to raise throughput, but it creates a new problem: an
+            instruction can need a result that an earlier instruction hasn't written back yet. Solving
+            that cleanly was the most interesting part.
+          </p>
+        </section>
+
+        <section class="pp-section reveal">
+          <h2 class="pp-section__title"><span class="pp-section__num">02</span> How I built it</h2>
+          <ol class="pp-steps">
+            <li class="pp-step">
+              <h3>Extend the instruction set first</h3>
+              <p>Before pipelining, I added three <strong>R-type instructions</strong>
+              (<code>SLL</code>, <code>XOR</code>, and <code>NOR</code>) to the single-cycle design by
+              extending the ALU and control unit. Doing this first meant any instruction bugs were
+              isolated from pipeline bugs later.</p>
+            </li>
+            <li class="pp-step">
+              <h3>Build the 5-stage pipeline</h3>
+              <p>I inserted <strong>pipeline registers</strong> between the stages to hold each
+              instruction's state as it advances, and rewired the datapath across modules so the five
+              stages run concurrently on different instructions.</p>
+            </li>
+            <li class="pp-step">
+              <h3>Hazard detection &amp; stalls</h3>
+              <p>I built a dedicated <strong>hazard-detection module</strong> (kept separate from the
+              top-level design for clarity) that spots data hazards and inserts <strong>stalls</strong>
+              until the needed data is available. This included adding an enable input to the program
+              counter so the pipeline can be frozen when a stall is required.</p>
+            </li>
+            <li class="pp-step">
+              <h3>Verify on FPGA</h3>
+              <p>I validated the design with <strong>AMD Vivado</strong> behavioral simulation targeting
+              a <strong>Xilinx Zynq-7000</strong> (xc7z020clg484-1). The testbench confirmed correct,
+              cycle-accurate results: for example <code>sll</code>, <code>xor</code>, and
+              <code>nor</code> producing exactly the expected register values.</p>
+            </li>
+          </ol>
+        </section>
+
+        <section class="pp-section reveal">
+          <h2 class="pp-section__title"><span class="pp-section__num">03</span> What I learned</h2>
+          <ul class="learn-grid">
+            <li class="learn-item">How instruction pipelining works stage by stage, and why it speeds things up</li>
+            <li class="learn-item">Data hazards and the stall / detection logic that resolves them</li>
+            <li class="learn-item">Writing modular Verilog RTL and wiring it through a top-level design</li>
+            <li class="learn-item">Extending an ALU and control unit to support new instructions</li>
+            <li class="learn-item">FPGA verification and reading Vivado waveforms to debug cycle-accurate behavior</li>
+          </ul>
+        </section>
+      </div>
+
+      <nav class="pp-nav" aria-label="Project navigation">
+        <a class="pp-nav__link pp-nav__link--prev" href="analog-audio.html">
+          <span class="pp-nav__dir">← Previous project</span>
+          <span class="pp-nav__name">Analog Audio Signal Processing</span>
+        </a>
+        <a class="pp-nav__link pp-nav__link--next" href="object-tracking.html">
+          <span class="pp-nav__dir">Next project →</span>
+          <span class="pp-nav__name">Object Tracking (Computer Vision)</span>
+        </a>
+      </nav>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>Shrey Singala</span>
+      <span class="footer__built">Built with plain HTML, CSS &amp; JS</span>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

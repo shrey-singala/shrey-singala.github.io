@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multi-Threaded Chat Application | Shrey Singala</title>
+  <meta name="description" content="A full-duplex C chat client/server over TCP with a custom binary protocol, pthreads, and airtight input validation." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d1117'/%3E%3Ctext x='50' y='68' font-size='56' text-anchor='middle' fill='%2322d3ee' font-family='monospace'%3ES%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="nav__inner container">
+      <a href="../index.html" class="nav__brand">
+        <span class="nav__brand-bracket">&lt;</span>shrey<span class="nav__brand-slash">/</span>singala<span class="nav__brand-bracket">&gt;</span>
+      </a>
+      <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navMenu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav__menu" id="navMenu" aria-label="Primary">
+        <a href="../index.html#projects" class="nav__link">Projects</a>
+        <a href="../index.html#skills" class="nav__link">Skills</a>
+        <a href="../index.html#experience" class="nav__link">Experience</a>
+        <a href="../index.html#contact" class="nav__link">Contact</a>
+        <a href="../assets/resume/Shrey_Singala.pdf" class="btn btn--sm btn--accent" target="_blank" rel="noopener">Résumé ↓</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="pp">
+    <div class="container">
+      <a href="../index.html#projects" class="pp-back">← All projects</a>
+
+      <header class="pp-hero reveal">
+        <div class="pp-eyebrow">
+          <span>Systems Programming · Networking</span>
+        </div>
+        <h1 class="pp-title">Multi-Threaded Chat Application</h1>
+        <p class="pp-lead">
+          A terminal chat client (and companion server) written in C that talks over a
+          <strong>custom binary protocol on TCP</strong>. It's full-duplex (you can watch live
+          messages arrive while you're mid-sentence) and it's engineered so that bad input never
+          gets you kicked off the server.
+        </p>
+        <ul class="pp-tags">
+          <li>C</li><li>TCP / IPv4</li><li>POSIX Sockets</li><li>pthreads</li>
+          <li>Binary Protocol</li><li>Signals</li><li>DNS Resolution</li>
+        </ul>
+      </header>
+
+      <section class="pp-gallery reveal" aria-label="Project images">
+        <img src="../assets/img/chat-interface.png" alt="Multi-threaded chat application terminal interface" />
+      </section>
+
+      <div class="pp-content">
+        <section class="pp-section reveal">
+          <h2 class="pp-section__title"><span class="pp-section__num">01</span> Overview</h2>
+          <p>
+            The client connects to a chat server, logs in with the system username, and then does two
+            things at once: it streams incoming messages to the screen and it sends whatever you type.
+            Doing both simultaneously, cleanly, without one blocking the other, is the heart of the
+            project.
+          </p>
+          <p>
+            Everything travels as fixed-size binary frames rather than plain text, so I had to design
+            the wire format, handle byte ordering across the network, and validate every field on both
+            ends.
+          </p>
+        </section>
+
+        <section class="pp-section reveal">
+          <h2 class="pp-section__title"><span class="pp-section__num">02</span> How I built it</h2>
+          <ol class="pp-steps">
+            <li class="pp-step">
+              <h3>Custom binary protocol</h3>
+              <p>Messages are fixed <strong>1,064-byte frames</strong>: a 4-byte type, a 4-byte UNIX
+              timestamp, a 32-byte username, and a 1,024-byte payload. I mapped this onto a packed
+              struct and send/receive it in struct-sized chunks, converting multi-byte fields to
+              <strong>network byte order</strong> (<code>htonl</code>/<code>ntohl</code>). Six message
+              types cover login, logout, sending, receiving, disconnects, and system notices.</p>
+            </li>
+            <li class="pp-step">
+              <h3>Concurrent send &amp; receive</h3>
+              <p>A dedicated <strong>pthreads</strong> receive thread continuously reads, parses, and
+              prints server messages, while the main thread handles user input from STDIN. That split
+              is what makes the client feel live instead of taking turns.</p>
+            </li>
+            <li class="pp-step">
+              <h3>Never get disconnected</h3>
+              <p>The server disconnects clients that send malformed or too-frequent messages, so I
+              <strong>validate every outbound message</strong> (non-empty, printable ASCII, length
+              limits, newline stripping) before it goes out, and enforce rate limits via careful
+              synchronization of shared state across the two threads. Bad input is reported to the user
+              instead of ever reaching the server.</p>
+            </li>
+            <li class="pp-step">
+              <h3>Polish &amp; clean shutdown</h3>
+              <p>The client resolves <code>--domain</code> names via DNS, highlights <code>@mentions</code>
+              in color with a terminal bell, and shuts down gracefully on Ctrl-C, SIGTERM, or EOF:
+              sending a logout, closing the socket, joining the thread, and freeing memory.</p>
+            </li>
+          </ol>
+        </section>
+
+        <section class="pp-section reveal">
+          <h2 class="pp-section__title"><span class="pp-section__num">03</span> What I learned</h2>
+          <ul class="learn-grid">
+            <li class="learn-item">BSD socket programming and the TCP connection lifecycle</li>
+            <li class="learn-item">Designing a binary wire protocol and handling network byte order</li>
+            <li class="learn-item">POSIX threads and safely sharing state between them</li>
+            <li class="learn-item">Signal handling and leak-free resource cleanup in C</li>
+            <li class="learn-item">Defensive programming: validating input so failures never reach the server</li>
+          </ul>
+        </section>
+      </div>
+
+      <nav class="pp-nav" aria-label="Project navigation">
+        <a class="pp-nav__link pp-nav__link--prev" href="../index.html#projects">
+          <span class="pp-nav__dir">← Back to</span>
+          <span class="pp-nav__name">All projects</span>
+        </a>
+        <a class="pp-nav__link pp-nav__link--next" href="analog-audio.html">
+          <span class="pp-nav__dir">Next project →</span>
+          <span class="pp-nav__name">Analog Audio Signal Processing</span>
+        </a>
+      </nav>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>Shrey Singala</span>
+      <span class="footer__built">Built with plain HTML, CSS &amp; JS</span>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
